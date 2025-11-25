@@ -1,0 +1,2096 @@
+<!doctype html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Respiratório</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100%;
+            min-height: 100%;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        /* Animação de pulmão no fundo - MAIS VISÍVEL */
+        .lung-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 900px;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .lung-left, .lung-right {
+            animation: breathing 4s ease-in-out infinite;
+        }
+
+        .lung-left {
+            transform-origin: center right;
+        }
+
+        .lung-right {
+            transform-origin: center left;
+        }
+
+        @keyframes breathing {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        /* Garantir que o conteúdo fique acima da animação */
+        header, nav, .container, .content, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            position: relative;
+            z-index: 1;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            opacity: 0.95;
+        }
+
+        nav {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 18px 28px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 3px 3px 0 0;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+        }
+
+        nav a:hover::before {
+            width: 70%;
+        }
+
+        nav a.active {
+            background: rgba(255,255,255,0.25);
+        }
+
+        nav a.active::before {
+            width: 70%;
+        }
+
+        .content {
+            background: white;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+            border-left-color: #764ba2;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 20px;
+        }
+
+        .diagram img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .interactive-area {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border: 3px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(102,126,234,0.2);
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+
+        .info-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .team-member {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.4);
+        }
+
+        .team-member h3 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        .podcast-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .podcast-link {
+            background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+            color: white;
+            padding: 25px 30px;
+            text-decoration: none;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(29,185,84,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .podcast-link::before {
+            content: '▶ Ouvir no Spotify';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            font-weight: bold;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .podcast-link:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(29,185,84,0.5);
+        }
+
+        .podcast-link:hover::before {
+            opacity: 1;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .podcast-link span {
+            font-size: 2rem;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            width: 100%;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav a {
+                float: none;
+                width: 100%;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+                margin: 15px;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Estilo para SVG interativo */
+        .respiratory-svg {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+        }
+
+        .clickable-part {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-part:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .clickable-part:hover ellipse,
+        .clickable-part:hover rect,
+        .clickable-part:hover path {
+            filter: brightness(1.2);
+        }
+
+        .detail-panel {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 3px solid #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            display: none;
+            animation: slideDown 0.4s ease;
+            box-shadow: 0 5px 20px rgba(102,126,234,0.3);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-panel.show {
+            display: block;
+        }
+
+        .detail-panel h3 {
+            color: #667eea;
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .detail-panel p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        /* Estilos do Quiz */
+        .quiz-question {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question h3 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 3px solid #ddd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .quiz-option.correct {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .quiz-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+            animation: slideDown 0.4s ease;
+        }
+
+        .quiz-feedback.correct {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 2px solid #28a745;
+            color: #0d3d1a;
+            font-weight: 600;
+        }
+
+        .quiz-feedback.incorrect {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 2px solid #dc3545;
+            color: #5a0d14;
+            font-weight: 600;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><!-- Animação de pulmão no fundo - AGORA BEM VISÍVEL -->
+  <svg class="lung-animation" viewbox="0 0 400 650" xmlns="http://www.w3.org/2000/svg"><defs>
+    <lineargradient id="lungBgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+     <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+     <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.6" />
+    </lineargradient>
+   </defs> <!-- Pulmão Esquerdo --> <g class="lung-left">
+    <path d="M 150 290 Q 80 320 80 390 Q 80 480 120 520 Q 140 540 150 540 Q 160 540 170 530 Q 200 500 200 390 Q 200 320 150 290" fill="url(#lungBgGradient)" stroke="white" stroke-width="4" opacity="1" />
+    <path d="M 150 330 Q 120 340 110 380" stroke="white" stroke-width="3" fill="none" opacity="0.7" />
+    <path d="M 150 370 Q 130 380 120 420" stroke="white" stroke-width="3" fill="none" opacity="0.7" />
+   </g> <!-- Pulmão Direito --> <g class="lung-right">
+    <path d="M 250 290 Q 320 320 320 390 Q 320 480 280 520 Q 260 540 250 540 Q 240 540 230 530 Q 200 500 200 390 Q 200 320 250 290" fill="url(#lungBgGradient)" stroke="white" stroke-width="4" opacity="1" />
+    <path d="M 250 330 Q 280 340 290 380" stroke="white" stroke-width="3" fill="none" opacity="0.7" />
+    <path d="M 250 360 Q 270 370 280 410" stroke="white" stroke-width="3" fill="none" opacity="0.7" />
+   </g> <!-- Traqueia --> <rect x="187" y="155" width="26" height="95" fill="white" stroke="white" stroke-width="3" rx="3" opacity="0.6" /> <path d="M 190 165 Q 200 168 210 165" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <path d="M 190 180 Q 200 183 210 180" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <path d="M 190 195 Q 200 198 210 195" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <path d="M 190 210 Q 200 213 210 210" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <path d="M 190 225 Q 200 228 210 225" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <path d="M 190 240 Q 200 243 210 240" stroke="white" stroke-width="2.5" fill="none" opacity="0.6" /> <!-- Brônquios --> <path d="M 200 250 Q 180 265 150 290" stroke="white" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6" /> <path d="M 200 250 Q 220 265 250 290" stroke="white" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6" />
+  </svg>
+  <header>
+   <h1 id="mainTitle">Sistema Respiratório</h1>
+   <p id="subtitle">Aprenda sobre a anatomia e fisiologia do sistema respiratório humano</p>
+  </header>
+  <nav><a href="#" class="nav-link active" data-section="inicio">Início</a> <a href="#" class="nav-link" data-section="anatomia">Anatomia</a> <a href="#" class="nav-link" data-section="processo">Processo</a> <a href="#" class="nav-link" data-section="doencas">Doenças</a> <a href="#" class="nav-link" data-section="curiosidades">Curiosidades</a> <a href="#" class="nav-link" data-section="interacoes">Interações</a> <a href="#" class="nav-link" data-section="quiz">Quiz</a> <a href="#" class="nav-link" data-section="podcast">Podcast</a> <a href="#" class="nav-link" data-section="equipe">Equipe</a> <a href="#" class="nav-link" data-section="referencias">Referências</a>
+  </nav>
+  <div class="content"><!-- INÍCIO -->
+   <section id="inicio" class="section active">
+    <h2>Bem-vindo ao Sistema Respiratório Interativo</h2>
+    <p style="font-size: 1.1rem; line-height: 1.8;">Este site foi desenvolvido para ajudar você a compreender o funcionamento do sistema respiratório humano de forma interativa e didática.</p>
+    <div class="card">
+     <h3>🎯 O que você vai aprender:</h3>
+     <ul style="font-size: 1.05rem; line-height: 2;">
+      <li><strong>Anatomia Completa:</strong> Estrutura detalhada de cada órgão respiratório</li>
+      <li><strong>Fisiologia:</strong> Como funciona o processo de respiração em cada etapa</li>
+      <li><strong>Patologias:</strong> Principais doenças respiratórias e seus sintomas</li>
+      <li><strong>Ciência Fascinante:</strong> Curiosidades surpreendentes sobre a respiração</li>
+     </ul>
+    </div>
+    <div class="info-box">
+     <h3>📊 Dados Importantes do Sistema Respiratório</h3>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+      <div style="background: white; padding: 15px; border-radius: 10px;">
+       <div style="font-size: 2rem; color: #667eea;">
+        20.000
+       </div>
+       <div style="font-weight: bold;">
+        Respirações/dia
+       </div>
+      </div>
+      <div style="background: white; padding: 15px; border-radius: 10px;">
+       <div style="font-size: 2rem; color: #667eea;">
+        500ml
+       </div>
+       <div style="font-weight: bold;">
+        Volume por respiração
+       </div>
+      </div>
+      <div style="background: white; padding: 15px; border-radius: 10px;">
+       <div style="font-size: 2rem; color: #667eea;">
+        70m²
+       </div>
+       <div style="font-weight: bold;">
+        Área dos alvéolos
+       </div>
+      </div>
+      <div style="background: white; padding: 15px; border-radius: 10px;">
+       <div style="font-size: 2rem; color: #667eea;">
+        600M
+       </div>
+       <div style="font-weight: bold;">
+        Alvéolos totais
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <h3>     Caminho do Ar no Corpo</h3>
+     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+      <div style="background: #667eea; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Nariz
+      </div><span style="font-size: 1.5rem;">→</span>
+      <div style="background: #764ba2; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Faringe
+      </div><span style="font-size: 1.5rem;">→</span>
+      <div style="background: #667eea; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Laringe
+      </div><span style="font-size: 1.5rem;">→</span>
+      <div style="background: #764ba2; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Traqueia
+      </div><span style="font-size: 1.5rem;">→</span>
+      <div style="background: #667eea; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Brônquios
+      </div><span style="font-size: 1.5rem;">→</span>
+      <div style="background: #764ba2; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+       Alvéolos
+      </div>
+     </div>
+    </div>
+   </section><!-- ANATOMIA -->
+   <section id="anatomia" class="section">
+    <h2>Anatomia do Sistema Respiratório</h2>
+    <p>Clique em cada parte do diagrama para saber mais sobre sua função:</p>
+    <div class="diagram">
+     <svg class="respiratory-svg" viewbox="0 0 400 650" xmlns="http://www.w3.org/2000/svg"><!-- Definições de gradientes e sombras --> <defs>
+       <lineargradient id="noseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#FFD5E5;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#FFB6C1;stop-opacity:1" />
+       </lineargradient>
+       <lineargradient id="pharynxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#FFB89D;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#FFA07A;stop-opacity:1" />
+       </lineargradient>
+       <lineargradient id="larynxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#FF8674;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#FF6347;stop-opacity:1" />
+       </lineargradient>
+       <lineargradient id="tracheaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#A8D8F0;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#87CEEB;stop-opacity:1" />
+       </lineargradient>
+       <lineargradient id="bronchiGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#6BA3D4;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#4682B4;stop-opacity:1" />
+       </lineargradient>
+       <lineargradient id="lungGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#B8EDE0;stop-opacity:0.9" />
+        <stop offset="50%" style="stop-color:#98D8C8;stop-opacity:0.85" />
+        <stop offset="100%" style="stop-color:#78C4B4;stop-opacity:0.8" />
+       </lineargradient>
+       <lineargradient id="diaphragmGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#FFF0DB;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#FFE4B5;stop-opacity:1" />
+       </lineargradient>
+       <filter id="shadow">
+        <fedropshadow dx="0" dy="2" stddeviation="3" flood-opacity="0.3" />
+       </filter>
+       <filter id="glow">
+        <fegaussianblur stddeviation="2" result="coloredBlur" />
+        <femerge>
+         <femergenode in="coloredBlur" />
+         <femergenode in="SourceGraphic" />
+        </femerge>
+       </filter>
+      </defs> <!-- Pulmão Esquerdo (fundo) --> <g class="clickable-part" data-organ="pulmao-esquerdo" filter="url(#shadow)">
+       <path d="M 150 290 Q 80 320 80 390 Q 80 480 120 520 Q 140 540 150 540 Q 160 540 170 530 Q 200 500 200 390 Q 200 320 150 290" fill="url(#lungGradient)" stroke="#2D8B74" stroke-width="3" opacity="0.95" /> <!-- Lobos do pulmão esquerdo -->
+       <path d="M 150 330 Q 120 340 110 380" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4" />
+       <path d="M 150 370 Q 130 380 120 420" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4" />
+       <text x="150" y="315" text-anchor="middle" font-size="13" font-weight="bold" fill="#2D8B74">
+        Pulmão
+       </text>
+       <text x="150" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="#2D8B74">
+        Esquerdo
+       </text> <!-- Bronquíolos internos -->
+       <circle cx="130" cy="360" r="3" fill="#4682B4" opacity="0.3" />
+       <circle cx="145" cy="380" r="2.5" fill="#4682B4" opacity="0.3" />
+       <circle cx="125" cy="400" r="2.5" fill="#4682B4" opacity="0.3" />
+       <circle cx="160" cy="410" r="3" fill="#4682B4" opacity="0.3" />
+      </g> <!-- Pulmão Direito (fundo) --> <g class="clickable-part" data-organ="pulmao-direito" filter="url(#shadow)">
+       <path d="M 250 290 Q 320 320 320 390 Q 320 480 280 520 Q 260 540 250 540 Q 240 540 230 530 Q 200 500 200 390 Q 200 320 250 290" fill="url(#lungGradient)" stroke="#2D8B74" stroke-width="3" opacity="0.95" /> <!-- Lobos do pulmão direito (3 lobos) -->
+       <path d="M 250 330 Q 280 340 290 380" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4" />
+       <path d="M 250 360 Q 270 370 280 410" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4" />
+       <path d="M 250 390 Q 265 400 275 440" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4" />
+       <text x="250" y="315" text-anchor="middle" font-size="13" font-weight="bold" fill="#2D8B74">
+        Pulmão
+       </text>
+       <text x="250" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="#2D8B74">
+        Direito
+       </text> <!-- Bronquíolos internos -->
+       <circle cx="270" cy="360" r="3" fill="#4682B4" opacity="0.3" />
+       <circle cx="255" cy="380" r="2.5" fill="#4682B4" opacity="0.3" />
+       <circle cx="275" cy="400" r="2.5" fill="#4682B4" opacity="0.3" />
+       <circle cx="240" cy="410" r="3" fill="#4682B4" opacity="0.3" />
+      </g> <!-- Nariz --> <g class="clickable-part" data-organ="nariz" filter="url(#shadow)">
+       <ellipse cx="200" cy="50" rx="35" ry="25" fill="url(#noseGradient)" stroke="#FF1493" stroke-width="2.5" />
+       <ellipse cx="188" cy="50" rx="8" ry="12" fill="#FF69B4" opacity="0.6" />
+       <ellipse cx="212" cy="50" rx="8" ry="12" fill="#FF69B4" opacity="0.6" />
+       <path d="M 185 58 Q 200 65 215 58" stroke="#C71585" stroke-width="2" fill="none" />
+       <text x="200" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#C71585">
+        Nariz
+       </text>
+      </g> <!-- Faringe --> <g class="clickable-part" data-organ="faringe" filter="url(#shadow)">
+       <path d="M 185 75 L 185 115 Q 185 125 195 125 L 205 125 Q 215 125 215 115 L 215 75 Q 215 75 200 75 Q 185 75 185 75" fill="url(#pharynxGradient)" stroke="#E85D3A" stroke-width="2.5" />
+       <line x1="188" y1="85" x2="212" y2="85" stroke="#E85D3A" stroke-width="1" opacity="0.5" />
+       <line x1="188" y1="95" x2="212" y2="95" stroke="#E85D3A" stroke-width="1" opacity="0.5" />
+       <line x1="188" y1="105" x2="212" y2="105" stroke="#E85D3A" stroke-width="1" opacity="0.5" />
+       <text x="245" y="100" text-anchor="start" font-size="13" font-weight="bold" fill="#E85D3A">
+        Faringe
+       </text>
+       <line x1="215" y1="95" x2="240" y2="98" stroke="#E85D3A" stroke-width="1.5" />
+      </g> <!-- Laringe --> <g class="clickable-part" data-organ="laringe" filter="url(#shadow)">
+       <path d="M 175 130 Q 175 145 185 150 L 215 150 Q 225 145 225 130 Q 225 125 212 122 L 188 122 Q 175 125 175 130" fill="url(#larynxGradient)" stroke="#D43F1A" stroke-width="2.5" />
+       <ellipse cx="200" cy="136" rx="15" ry="8" fill="#FF4500" opacity="0.4" />
+       <path d="M 190 136 Q 200 140 210 136" stroke="#8B0000" stroke-width="1.5" fill="none" />
+       <text x="245" y="140" text-anchor="start" font-size="13" font-weight="bold" fill="#D43F1A">
+        Laringe
+       </text>
+       <line x1="225" y1="135" x2="240" y2="138" stroke="#D43F1A" stroke-width="1.5" />
+      </g> <!-- Traqueia --> <g class="clickable-part" data-organ="traqueia" filter="url(#shadow)">
+       <rect x="187" y="155" width="26" height="95" fill="url(#tracheaGradient)" stroke="#4682B4" stroke-width="2.5" rx="3" /> <!-- Anéis cartilaginosos -->
+       <path d="M 190 165 Q 200 168 210 165" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 178 Q 200 181 210 178" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 191 Q 200 194 210 191" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 204 Q 200 207 210 204" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 217 Q 200 220 210 217" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 230 Q 200 233 210 230" stroke="#4682B4" stroke-width="2" fill="none" />
+       <path d="M 190 243 Q 200 246 210 243" stroke="#4682B4" stroke-width="2" fill="none" />
+       <text x="240" y="205" text-anchor="start" font-size="13" font-weight="bold" fill="#4682B4">
+        Traqueia
+       </text>
+       <line x1="213" y1="200" x2="235" y2="203" stroke="#4682B4" stroke-width="1.5" />
+      </g> <!-- Brônquios --> <g class="clickable-part" data-organ="bronquios" filter="url(#shadow)"><!-- Brônquio esquerdo -->
+       <path d="M 200 250 Q 180 265 150 290" stroke="url(#bronchiGradient)" stroke-width="12" fill="none" stroke-linecap="round" />
+       <path d="M 200 250 Q 185 262 160 280" stroke="#6BA3D4" stroke-width="2" fill="none" opacity="0.6" /> <!-- Brônquio direito -->
+       <path d="M 200 250 Q 220 265 250 290" stroke="url(#bronchiGradient)" stroke-width="12" fill="none" stroke-linecap="round" />
+       <path d="M 200 250 Q 215 262 240 280" stroke="#6BA3D4" stroke-width="2" fill="none" opacity="0.6" /> <!-- Ramificações bronquiais -->
+       <path d="M 170 275 Q 160 280 150 285" stroke="#4682B4" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7" />
+       <path d="M 230 275 Q 240 280 250 285" stroke="#4682B4" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7" />
+       <text x="200" y="272" text-anchor="middle" font-size="13" font-weight="bold" fill="#2B5C8A">
+        Brônquios
+       </text>
+      </g> <!-- Diafragma --> <g class="clickable-part" data-organ="diafragma" filter="url(#shadow)">
+       <path d="M 75 545 Q 120 570 200 575 Q 280 570 325 545" fill="url(#diaphragmGradient)" stroke="#D4A574" stroke-width="3" />
+       <path d="M 90 550 Q 130 568 200 572 Q 270 568 310 550" stroke="#D4A574" stroke-width="1.5" fill="none" opacity="0.5" /> <!-- Fibras musculares -->
+       <line x1="120" y1="555" x2="125" y2="565" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <line x1="150" y1="563" x2="155" y2="570" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <line x1="180" y1="567" x2="185" y2="573" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <line x1="210" y1="567" x2="215" y2="573" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <line x1="240" y1="563" x2="245" y2="570" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <line x1="270" y1="555" x2="275" y2="565" stroke="#D4A574" stroke-width="1.5" opacity="0.4" />
+       <text x="200" y="600" text-anchor="middle" font-size="13" font-weight="bold" fill="#A67C52">
+        Diafragma
+       </text>
+      </g>
+     </svg>
+    </div>
+    <div id="organ-details" class="detail-panel">
+     <h3 id="organ-name"></h3>
+     <p id="organ-description"></p>
+    </div>
+    <div class="card">
+     <h3>Componentes Principais:</h3>
+     <ul>
+      <li><strong>Nariz:</strong> Filtra, aquece e umidifica o ar</li>
+      <li><strong>Faringe:</strong> Passagem comum para ar e alimentos</li>
+      <li><strong>Laringe:</strong> Contém as cordas vocais</li>
+      <li><strong>Traqueia:</strong> Tubo que conduz o ar aos pulm  es</li>
+      <li><strong>Brônquios:</strong> Ramificações que distribuem o ar</li>
+      <li><strong>Pulmões:</strong> Órgãos onde ocorre a troca gasosa</li>
+      <li><strong>Diafragma:</strong> Músculo principal da respiração</li>
+     </ul>
+    </div>
+   </section><!-- PROCESSO -->
+   <section id="processo" class="section">
+    <h2>Processo Respiratório</h2>
+    <div class="card">
+     <h3>1. 🔵 Inspiração (Entrada de Ar)</h3>
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+      <svg viewbox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" style="width: 150px;"><!-- Caixa torácica expandida --> <rect x="50" y="50" width="100" height="150" fill="none" stroke="#667eea" stroke-width="3" /> <!-- Pulmões expandidos --> <ellipse cx="80" cy="110" rx="20" ry="40" fill="#ff9999" opacity="0.7" /> <ellipse cx="120" cy="110" rx="20" ry="40" fill="#ff9999" opacity="0.7" /> <!-- Diafragma contraído (baixo) --> <path d="M 60 200 Q 100 220 140 200" fill="none" stroke="#ff6b6b" stroke-width="4" /> <!-- Setas de ar entrando --> <defs>
+        <marker id="arrowhead" markerwidth="10" markerheight="10" refx="9" refy="3" orient="auto">
+         <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+        </marker>
+       </defs> <path d="M 100 20 L 100 50" stroke="#667eea" stroke-width="3" marker-end="url(#arrowhead)" /> <text x="100" y="230" text-anchor="middle" fill="#667eea" font-weight="bold">
+        INSPIRA  ÃO
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 250px;">
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Mecanismo:</strong> O diafragma se contrai e desce, enquanto os músculos intercostais elevam as costelas. Isso aumenta o volume da caixa torácica.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Resultado:</strong> A pressão interna diminui (fica negativa) e o ar atmosférico é sugado para dentro dos pulmões através das vias aéreas.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #667eea;"><strong>⏱️ Duração:</strong> Aproximadamente 2 segundos</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <h3>2. 🔴 Expiração (Saída de Ar)</h3>
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+      <svg viewbox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" style="width: 150px;"><!-- Caixa torácica reduzida --> <rect x="60" y="60" width="80" height="130" fill="none" stroke="#764ba2" stroke-width="3" /> <!-- Pulmões reduzidos --> <ellipse cx="85" cy="110" rx="15" ry="30" fill="#ff9999" opacity="0.7" /> <ellipse cx="115" cy="110" rx="15" ry="30" fill="#ff9999" opacity="0.7" /> <!-- Diafragma relaxado (alto) --> <path d="M 65 180 Q 100 160 135 180" fill="none" stroke="#ff6b6b" stroke-width="4" /> <!-- Setas de ar saindo --> <path d="M 100 60 L 100 30" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead2)" /> <defs>
+        <marker id="arrowhead2" markerwidth="10" markerheight="10" refx="9" refy="3" orient="auto">
+         <polygon points="0 0, 10 3, 0 6" fill="#764ba2" />
+        </marker>
+       </defs> <text x="100" y="230" text-anchor="middle" fill="#764ba2" font-weight="bold">
+        EXPIRAÇÃO
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 250px;">
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Mecanismo:</strong> O diafragma relaxa e sobe, os músculos intercostais relaxam e as costelas descem. O volume da caixa torácica diminui.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Resultado:</strong> A pressão interna aumenta (fica positiva) e o ar rico em CO₂ é expelido dos pulmões para o exterior.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #764ba2;"><strong>⏱️ Duração:</strong> Aproximadamente 3 segundos</p>
+      </div>
+     </div>
+    </div>
+    <div class="info-box">
+     <h3>⚡ Hematose - Troca Gasosa nos Alvéolos</h3>
+     <div style="margin-top: 20px;">
+      <svg viewbox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; background: white; border-radius: 10px; padding: 20px;"><!-- Alvéolo --> <circle cx="200" cy="150" r="80" fill="#ffe6e6" stroke="#cc0000" stroke-width="3" /> <text x="200" y="90" text-anchor="middle" font-weight="bold" fill="#cc0000">
+        ALVÉOLO
+       </text> <text x="200" y="110" text-anchor="middle" font-size="12">
+        Ar com O₂
+       </text> <!-- Capilar sanguíneo inferior --> <ellipse cx="200" cy="240" rx="100" ry="20" fill="#8b0000" opacity="0.7" stroke="#8b0000" stroke-width="2" /> <text x="120" y="245" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
+        Sangue Venoso
+       </text> <text x="120" y="260" text-anchor="middle" fill="white" font-size="11">
+        (rico em CO₂)
+       </text> <!-- Capilar sanguíneo superior --> <ellipse cx="200" cy="60" rx="100" ry="20" fill="#dc143c" opacity="0.9" stroke="#dc143c" stroke-width="2" /> <text x="280" y="65" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
+        Sangue Arterial
+       </text> <text x="280" y="80" text-anchor="middle" fill="white" font-size="11">
+        (rico em O₂)
+       </text> <!-- Setas de O2 descendo --> <path d="M 180 130 L 180 220" stroke="#0066ff" stroke-width="3" marker-end="url(#arrowO2)" /> <path d="M 200 130 L 200 220" stroke="#0066ff" stroke-width="3" marker-end="url(#arrowO2)" /> <path d="M 220 130 L 220 220" stroke="#0066ff" stroke-width="3" marker-end="url(#arrowO2)" /> <text x="240" y="180" fill="#0066ff" font-weight="bold">
+        O₂
+       </text> <!-- Setas de CO2 subindo --> <path d="M 160 220 L 160 130" stroke="#ff6600" stroke-width="3" marker-end="url(#arrowCO2)" /> <path d="M 140 220 L 140 130" stroke="#ff6600" stroke-width="3" marker-end="url(#arrowCO2)" /> <text x="120" y="180" fill="#ff6600" font-weight="bold">
+        CO₂
+       </text> <!-- Fluxo sanguíneo --> <path d="M 300 240 L 380 240 L 380 60 L 300 60" stroke="#8b0000" stroke-width="5" fill="none" marker-end="url(#arrowBlood)" /> <text x="400" y="155" font-weight="bold" fill="#8b0000">
+        Circulação
+       </text> <defs>
+        <marker id="arrowO2" markerwidth="10" markerheight="10" refx="9" refy="3" orient="auto">
+         <polygon points="0 0, 10 3, 0 6" fill="#0066ff" />
+        </marker>
+        <marker id="arrowCO2" markerwidth="10" markerheight="10" refx="9" refy="3" orient="auto">
+         <polygon points="0 0, 10 3, 0 6" fill="#ff6600" />
+        </marker>
+        <marker id="arrowBlood" markerwidth="10" markerheight="10" refx="9" refy="3" orient="auto">
+         <polygon points="0 0, 10 3, 0 6" fill="#8b0000" />
+        </marker>
+       </defs>
+      </svg>
+     </div>
+     <p style="margin-top: 20px; font-size: 1.1rem; line-height: 1.8;"><strong>O que acontece:</strong> A hematose é o processo de troca gasosa que ocorre nos alvéolos pulmonares. O oxigênio (O₂) do ar inspirado difunde-se através da membrana alvéolo-capilar para o sangue, enquanto o gás carbônico (CO₂) faz o caminho inverso, saindo do sangue para o ar alveolar.</p>
+     <p style="font-size: 1.1rem; line-height: 1.8;"><strong>Importância:</strong> Esse processo permite que nosso sangue se oxigene e elimine o CO₂, produto residual do metabolismo celular. Sem a hematose, nossas células não receberiam o oxigênio necessário para produzir energia.</p>
+    </div>
+    <div class="card">
+     <h3>📊 Volumes e Capacidades Pulmonares</h3>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+      <div style="background: #667eea; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+       <div style="font-size: 2rem; font-weight: bold;">
+        500ml
+       </div>
+       <div style="font-size: 0.9rem;">
+        Volume Corrente<br>
+        (respiração normal)
+       </div>
+      </div>
+      <div style="background: #764ba2; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+       <div style="font-size: 2rem; font-weight: bold;">
+        3.000ml
+       </div>
+       <div style="font-size: 0.9rem;">
+        Volume de Reserva<br>
+        (inspiração forçada)
+       </div>
+      </div>
+      <div style="background: #667eea; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+       <div style="font-size: 2rem; font-weight: bold;">
+        6.000ml
+       </div>
+       <div style="font-size: 0.9rem;">
+        Capacidade Vital<br>
+        (máximo possível)
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOENÇAS -->
+   <section id="doencas" class="section">
+    <h2>Principais Doenças Respiratórias</h2>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; flex-shrink: 0;"><!-- Brônquio normal --> <circle cx="40" cy="75" r="25" fill="#ffc0c0" stroke="#cc0000" stroke-width="2" /> <circle cx="40" cy="75" r="18" fill="white" stroke="#cc0000" stroke-width="1" /> <text x="40" y="115" text-anchor="middle" font-size="12" font-weight="bold">
+        Normal
+       </text> <!-- Brônquio com asma --> <circle cx="110" cy="75" r="25" fill="#ff6666" stroke="#cc0000" stroke-width="3" /> <circle cx="110" cy="75" r="10" fill="white" stroke="#cc0000" stroke-width="2" /> <!-- Inflamação --> <circle cx="110" cy="75" r="20" fill="#ff9999" opacity="0.5" /> <text x="110" y="115" text-anchor="middle" font-size="12" font-weight="bold">
+        Asma
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #cc0000; margin: 0;">🫁 Asma</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>O que é:</strong> Doença inflamatória crônica que causa estreitamento das vias aéreas devido à inflamação e produção excessiva de muco.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Sintomas:</strong> Falta de ar, chiado no peito, tosse (especialmente à noite), aperto no peito.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Gatilhos:</strong> Alérgenos (pólen, ácaros), exercício físico, ar frio, fumaça, estresse.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #667eea;"><strong>Prevalência:</strong> Afeta cerca de 300 milhões de pessoas no mundo.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; flex-shrink: 0;"><!-- Brônquio com inflamação --> <rect x="30" y="30" width="30" height="90" fill="#ff9999" stroke="#cc0000" stroke-width="2" rx="5" /> <rect x="38" y="35" width="14" height="80" fill="#ffcccc" stroke="#cc0000" stroke-width="1" /> <!-- Muco --> <ellipse cx="45" cy="60" rx="8" ry="12" fill="#ffff00" opacity="0.7" /> <ellipse cx="45" cy="85" rx="8" ry="12" fill="#ffff00" opacity="0.7" /> <ellipse cx="45" cy="105" rx="8" ry="12" fill="#ffff00" opacity="0.7" /> <text x="75" y="80" text-anchor="start" font-size="12" font-weight="bold">
+        Bronquite
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #cc6600; margin: 0;">🦠 Bronquite</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>O que é:</strong> Inflamação dos brônquios (tubos que levam ar aos pulmões), causando produção excessiva de muco e tosse persistente.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Tipos:</strong></p>
+       <ul style="font-size: 1.05rem; line-height: 1.8;">
+        <li><strong>Aguda:</strong> Geralmente causada por vírus, dura algumas semanas</li>
+        <li><strong>Crônica:</strong> Persistente, comum em fumantes, pode durar meses ou anos</li>
+       </ul>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Sintomas:</strong> Tosse com muco (catarro), falta de ar, chiado, fadiga, febre leve.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; flex-shrink: 0;"><!-- Pulmão com pneumonia --> <ellipse cx="75" cy="75" rx="50" ry="60" fill="#ff9999" opacity="0.7" stroke="#cc0000" stroke-width="2" /> <!-- Áreas infectadas --> <circle cx="60" cy="60" r="12" fill="#cc0000" opacity="0.8" /> <circle cx="85" cy="70" r="10" fill="#cc0000" opacity="0.8" /> <circle cx="70" cy="90" r="15" fill="#cc0000" opacity="0.8" /> <circle cx="90" cy="85" r="8" fill="#cc0000" opacity="0.8" /> <!-- Bactérias --> <circle cx="55" cy="55" r="3" fill="#ffff00" /> <circle cx="80" cy="68" r="3" fill="#ffff00" /> <text x="75" y="140" text-anchor="middle" font-size="12" font-weight="bold">
+        Pneumonia
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #990000; margin: 0;">🦠 Pneumonia</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>O que é:</strong> Infecção que inflama os alvéolos pulmonares, que podem se encher de líquido ou pus, dificultando a respiração e a oxigenação do sangue.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Causas:</strong> Bactérias (mais comum: Streptococcus pneumoniae), vírus (influenza, COVID-19), fungos.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Sintomas:</strong> Febre alta, tosse com catarro (pode ser esverdeado ou com sangue), dor no peito ao respirar, falta de ar, fadiga extrema.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #990000;"><strong>⚠️ Atenção:</strong> Pode ser grave, especialmente em idosos, crianças e pessoas com imunidade baixa.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; flex-shrink: 0;"><!-- Pulmão saudável --> <ellipse cx="40" cy="75" rx="30" ry="50" fill="#ffcccc" opacity="0.8" stroke="#cc0000" stroke-width="2" /> <text x="40" y="135" text-anchor="middle" font-size="11" font-weight="bold">
+        Saudável
+       </text> <!-- Pulmão com DPOC --> <ellipse cx="110" cy="75" rx="30" ry="50" fill="#996666" opacity="0.8" stroke="#660000" stroke-width="2" /> <!-- Alvéolos danificados --> <circle cx="105" cy="60" r="5" fill="#333333" opacity="0.5" /> <circle cx="115" cy="70" r="4" fill="#333333" opacity="0.5" /> <circle cx="110" cy="85" r="6" fill="#333333" opacity="0.5" /> <circle cx="120" cy="80" r="4" fill="#333333" opacity="0.5" /> <text x="110" y="135" text-anchor="middle" font-size="11" font-weight="bold">
+        DPOC
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #660000; margin: 0;">🚬 DPOC (Doença Pulmonar Obstrutiva Crônica)</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>O que é:</strong> Grupo de doenças progressivas que bloqueiam o fluxo de ar e causam dificuldade respiratória. Inclui enfisema e bronquite crônica.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Causa Principal:</strong> Tabagismo (85-90% dos casos). Também: poluição do ar, exposição ocupacional a poeiras/químicos.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Sintomas:</strong> Falta de ar progressiva, tosse crônica com catarro, chiado, cansaço, infecções respiratórias frequentes.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #660000;"><strong>⚠️ Impacto:</strong> 3ª principal causa de morte no mundo (OMS). É irreversível, mas o tratamento pode desacelerar a progressão.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; flex-shrink: 0;"><!-- Vírus COVID --> <circle cx="75" cy="75" r="35" fill="#cc0066" opacity="0.8" stroke="#990033" stroke-width="2" /> <!-- Espículas do vírus --> <circle cx="50" cy="55" r="5" fill="#ff0066" /> <circle cx="95" cy="60" r="5" fill="#ff0066" /> <circle cx="100" cy="85" r="5" fill="#ff0066" /> <circle cx="85" cy="105" r="5" fill="#ff0066" /> <circle cx="55" cy="100" r="5" fill="#ff0066" /> <circle cx="45" cy="80" r="5" fill="#ff0066" /> <circle cx="75" cy="45" r="5" fill="#ff0066" /> <circle cx="75" cy="105" r="5" fill="#ff0066" /> <text x="75" y="140" text-anchor="middle" font-size="11" font-weight="bold">
+        COVID-19
+       </text>
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #cc0066; margin: 0;">🦠 COVID-19</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>O que é:</strong> Doença causada pelo coronavírus SARS-CoV-2 que afeta principalmente o sistema respiratório, podendo causar desde sintomas leves até insuficiência respiratória grave.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Transmissão:</strong> Gotículas respiratórias, aerossóis, contato com superfícies contaminadas.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Sintomas Respiratórios:</strong> Tosse seca, falta de ar, dor no peito, perda de olfato e paladar. Casos graves: pneumonia, síndrome respiratória aguda.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Prevenção:</strong> Vacinação, uso de máscaras, higiene das mãos, distanciamento social quando necessário.</p>
+      </div>
+     </div>
+    </div>
+    <div class="info-box">
+     <h3>🏥 Quando Procurar Ajuda Médica</h3>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+      <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #cc0000;"><strong style="color: #cc0000;">Sinais de Emergência:</strong>
+       <ul style="margin-top: 10px; line-height: 1.8;">
+        <li>Dificuldade respiratória severa</li>
+        <li>Lábios ou rosto azulados</li>
+        <li>Dor intensa no peito</li>
+        <li>Confusão mental</li>
+       </ul>
+      </div>
+      <div style="background: white; padding: 15px; border-radius: 10px; border-left: 4px solid #ff9900;"><strong style="color: #ff9900;">Consultar Médico:</strong>
+       <ul style="margin-top: 10px; line-height: 1.8;">
+        <li>Tosse persistente (&gt;3 semanas)</li>
+        <li>Febre alta prolongada</li>
+        <li>Catarro com sangue</li>
+        <li>Falta de ar progressiva</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- CURIOSIDADES -->
+   <section id="curiosidades" class="section">
+    <h2>Curiosidades Fascinantes</h2>
+    <div class="card">
+     <h3>🫁 Superfície Pulmonar</h3>
+     <p>Se fosse possível esticar toda a superfície dos alvéolos pulmonares, ela cobriria aproximadamente 70m² - o tamanho de meia quadra de tênis!</p>
+    </div>
+    <div class="card">
+     <h3>💨 Velocidade do Espirro</h3>
+     <p>Um espirro pode expelir ar a velocidades de até 160 km/h!</p>
+    </div>
+    <div class="card">
+     <h3>🌬️ Respirações Diárias</h3>
+     <p>Uma pessoa respira em média 20.000 vezes por dia.</p>
+    </div>
+    <div class="card">
+     <h3>🎤 Cordas Vocais</h3>
+     <p>As cordas vocais masculinas vibram cerca de 120 vezes por segundo, enquanto as femininas vibram cerca de 220 vezes por segundo.</p>
+    </div>
+    <div class="card">
+     <h3>🤿 Apneia</h3>
+     <p>O recorde mundial de prender a respiração é de mais de 24 minutos!</p>
+    </div>
+    <div class="info-box">
+     <h3>🩺 Exames e Prevenção</h3>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;">
+      <div style="background: white; padding: 20px; border-radius: 10px;">
+       <h4 style="color: #667eea; margin-top: 0;">🔬 Principais Exames</h4>
+       <ul style="line-height: 1.8;">
+        <li><strong>Espirometria:</strong> Mede a capacidade pulmonar</li>
+        <li><strong>Raio-X de Tórax:</strong> Identifica problemas estruturais</li>
+        <li><strong>Tomografia:</strong> Análise detalhada dos pulmões</li>
+        <li><strong>Gasometria:</strong> Mede gases no sangue</li>
+       </ul>
+      </div>
+      <div style="background: white; padding: 20px; border-radius: 10px;">
+       <h4 style="color: #667eea; margin-top: 0;">  ️ Prevenção</h4>
+       <ul style="line-height: 1.8;">
+        <li><strong>Não fume</strong> e evite fumaça</li>
+        <li><strong>Exercícios físicos</strong> regulares</li>
+        <li><strong>Vacinação</strong> em dia (gripe, pneumonia)</li>
+        <li><strong>Evite poluição</strong> e ambientes contaminados</li>
+        <li><strong>Higiene das mãos</strong> frequente</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- INTERAÇÕES COM OUTROS SISTEMAS -->
+   <section id="interacoes" class="section">
+    <h2>🔗 Interações com Outros Sistemas</h2>
+    <p>O sistema respiratório trabalha em conjunto com outros sistemas do corpo:</p>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100px; flex-shrink: 0;"><circle cx="60" cy="60" r="50" fill="#ff6b6b" opacity="0.8" /> <path d="M 60 20 Q 45 35 45 50 Q 45 70 60 85 Q 75 70 75 50 Q 75 35 60 20" fill="#cc0000" /> <circle cx="52" cy="45" r="8" fill="#990000" /> <circle cx="68" cy="45" r="8" fill="#990000" />
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #ff6b6b; margin: 0;">❤️ Sistema Cardiovascular</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>Parceria Vital:</strong> O coração bombeia sangue desoxigenado para os pulmões, onde ocorre a hematose. Depois, o sangue oxigenado retorna ao coração para ser distribuído ao corpo.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Conexão:</strong> Artéria pulmonar (leva sangue venoso aos pulmões) e veias pulmonares (trazem sangue arterial ao coração).</p>
+       <p style="font-size: 1.05rem; line-height: 1.8; color: #ff6b6b;"><strong>Curiosidade:</strong> Os pulmões recebem 100% do débito cardíaco a cada ciclo!</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100px; flex-shrink: 0;"><ellipse cx="60" cy="60" rx="45" ry="50" fill="#a8dadc" opacity="0.8" stroke="#457b9d" stroke-width="2" /> <circle cx="60" cy="40" r="15" fill="#457b9d" opacity="0.6" /> <path d="M 35 60 L 45 70 L 55 65 L 65 75 L 75 70 L 85 60" stroke="#457b9d" stroke-width="3" fill="none" />
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #457b9d; margin: 0;">🧠 Sistema Nervoso</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>Controle Automático:</strong> O centro respiratório no bulbo (tronco encefálico) controla o ritmo respiratório automaticamente, detectando níveis de CO₂ no sangue.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Controle Voluntário:</strong> O córtex cerebral permite controle consciente (segurar a respiração, respirar fundo).</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Quimiorreceptores:</strong> Sensores que detectam mudanças nos níveis de O₂, CO₂ e pH do sangue.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100px; flex-shrink: 0;"><path d="M 40 30 L 45 25 L 55 30 L 60 25 L 70 30 L 75 25 L 80 30 L 80 90 L 40 90 Z" fill="#f4a261" opacity="0.8" stroke="#e76f51" stroke-width="2" /> <ellipse cx="60" cy="50" rx="15" ry="10" fill="#e76f51" opacity="0.6" /> <rect x="50" y="65" width="20" height="15" fill="#e76f51" opacity="0.6" rx="3" />
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #e76f51; margin: 0;">🍽️ Sistema Digestório</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>Faringe Compartilhada:</strong> A faringe é passagem comum para ar e alimentos. A epiglote impede que alimentos entrem na laringe durante a deglutição.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Metabolismo:</strong> O oxigênio fornecido pelo sistema respiratório é essencial para a digestão e absorção de nutrientes pelas células intestinais.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Diafragma:</strong> Ajuda na digestão ao aumentar a pressão abdominal durante a defecação e vômito.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100px; flex-shrink: 0;"><rect x="30" y="30" width="60" height="60" fill="#90e0ef" opacity="0.8" stroke="#0077b6" stroke-width="2" rx="10" /> <path d="M 50 45 Q 60 35 70 45" stroke="#0077b6" stroke-width="3" fill="none" /> <path d="M 50 60 Q 60 70 70 60" stroke="#0077b6" stroke-width="3" fill="none" /> <circle cx="45" cy="50" r="3" fill="#0077b6" /> <circle cx="75" cy="50" r="3" fill="#0077b6" />
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #0077b6; margin: 0;">🦠 Sistema Imunológico</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>Primeira Linha de Defesa:</strong> O muco e os cílios nas vias aéreas capturam e eliminam patógenos antes que cheguem aos pulmões.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Macrófagos Alveolares:</strong> Células de defesa nos alvéolos que destroem bactérias e partículas estranhas.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>IgA Secretória:</strong> Anticorpos presentes no muco que neutralizam vírus e bactérias.</p>
+      </div>
+     </div>
+    </div>
+    <div class="card">
+     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <svg viewbox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100px; flex-shrink: 0;"><path d="M 60 20 L 50 40 L 60 35 L 70 40 Z" fill="#e9c46a" opacity="0.8" stroke="#f4a261" stroke-width="2" /> <rect x="55" y="40" width="10" height="40" fill="#e9c46a" opacity="0.8" stroke="#f4a261" stroke-width="2" /> <ellipse cx="60" cy="85" rx="20" ry="15" fill="#e9c46a" opacity="0.8" stroke="#f4a261" stroke-width="2" />
+      </svg>
+      <div style="flex: 1; min-width: 300px;">
+       <h3 style="color: #f4a261; margin: 0;">💪 Sistema Muscular</h3>
+       <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 10px;"><strong>Músculos Respiratórios:</strong> Diafragma (principal), intercostais externos e internos, escalenos, esternocleidomastóideo.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Oxigenação Muscular:</strong> Durante exercícios, os músculos demandam mais oxigênio, aumentando a frequência respiratória.</p>
+       <p style="font-size: 1.05rem; line-height: 1.8;"><strong>Treinamento:</strong> Exercícios aeróbicos fortalecem os músculos respiratórios e melhoram a capacidade pulmonar.</p>
+      </div>
+     </div>
+    </div>
+    <div class="info-box">
+     <h3>🔄 Integração Sistêmica</h3>
+     <p style="font-size: 1.1rem; line-height: 1.8;">O sistema respiratório não funciona isoladamente. Ele está intimamente conectado com todos os outros sistemas do corpo, formando uma rede complexa e interdependente. Qualquer alteração em um sistema pode afetar o funcionamento respiratório, e vice-versa.</p>
+     <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 15px;"><strong style="color: #667eea; font-size: 1.1rem;">Exemplo de Integração Durante Exercício:</strong>
+      <ol style="line-height: 2; margin-top: 10px;">
+       <li><strong>Sistema Nervoso</strong> detecta necessidade de mais energia</li>
+       <li><strong>Sistema Respiratório</strong> aumenta frequência de respirações</li>
+       <li><strong>Sistema Cardiovascular</strong> acelera batimentos cardíacos</li>
+       <li><strong>Sistema Muscular</strong> recebe mais oxigênio</li>
+       <li><strong>Sistema Digestório</strong> fornece glicose para energia</li>
+      </ol>
+     </div>
+    </div>
+   </section><!-- QUIZ -->
+   <section id="quiz" class="section">
+    <h2>📝 Quiz do Sistema Respiratório</h2>
+    <p>Escolha o modo de quiz e teste seus conhecimentos!</p><!-- Seletor de modo -->
+    <div id="quizModeSelector" style="margin-bottom: 30px;">
+     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); text-align: center;">
+      <h3 style="color: white; font-size: 2.5rem; margin: 0 0 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🎮 Escolha o Modo de Jogo</h3>
+      <p style="color: white; font-size: 1.2rem; opacity: 0.95; margin-bottom: 40px;">Teste seus conhecimentos sobre o sistema respiratório!</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+       <div id="modePerguntas" style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 4px solid transparent;">
+        <div style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+         📝
+        </div>
+        <h3 style="margin: 0 0 15px 0; font-size: 1.9rem; color: #667eea; font-weight: 700;">Quiz de Perguntas</h3>
+        <p style="font-size: 1.1rem; color: #555; line-height: 1.6; margin: 0;">Responda 10 perguntas sobre o sistema respiratório e teste seu conhecimento!</p>
+        <div style="margin-top: 25px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px; font-weight: 600; font-size: 1.05rem;">
+         Clique para começar ➡️
+        </div>
+       </div>
+       <div id="modeIdentificar" style="background: white; padding: 40px 30px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 4px solid transparent;">
+        <div style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+         🎯
+        </div>
+        <h3 style="margin: 0 0 15px 0; font-size: 1.9rem; color: #28a745; font-weight: 700;">Identificar Estruturas</h3>
+        <p style="font-size: 1.1rem; color: #555; line-height: 1.6; margin: 0;">Clique nas estruturas corretas no diagrama anatômico interativo!</p>
+        <div style="margin-top: 25px; padding: 12px; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border-radius: 10px; font-weight: 600; font-size: 1.05rem;">
+         Clique para começar ➡️
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="info-box" id="quizScoreBox" style="margin-bottom: 30px; display: none;">
+     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+      <div>
+       <h3 style="margin: 0;">📊 Sua Pontuação</h3>
+       <div style="font-size: 3rem; color: #667eea; font-weight: bold; margin-top: 10px;"><span id="score">0</span> / <span id="total">10</span>
+       </div>
+      </div>
+      <div><button id="restartQuiz" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(102,126,234,0.3); transition: all 0.3s ease;"> 🔄 Voltar ao Menu </button>
+      </div>
+     </div>
+    </div>
+    <div id="quizContainer"></div>
+    <div id="quizResult" style="display: none; margin-top: 30px;">
+     <div class="info-box">
+      <h3 style="text-align: center; font-size: 2rem;">🎉 Quiz Concluído!</h3>
+      <div style="text-align: center; font-size: 2.5rem; color: #667eea; font-weight: bold; margin: 20px 0;">
+       Você acertou <span id="finalScore">0</span> de <span id="finalTotal">10</span> questões!
+      </div>
+      <div style="text-align: center; font-size: 1.5rem; margin: 20px 0;"><span id="resultMessage"></span>
+      </div>
+      <div style="text-align: center; margin-top: 20px;"><button id="restartQuizBottom" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(102,126,234,0.3); transition: all 0.3s ease;"> 🔄 Fazer o Quiz Novamente </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- PODCAST -->
+   <section id="podcast" class="section">
+    <h2>🎙️ Pod Respirar</h2>
+    <p>Ouça nossos episódios sobre o sistema respiratório:</p>
+    <div class="podcast-links"><a href="https://open.spotify.com/episode/1R0z1nzhCOt7jjDLKfgc5Q" target="_blank" class="podcast-link" rel="noopener noreferrer"> <span>🎧</span>
+      <div><strong>Episódio 1: Como o Ar Viaja</strong>
+       <p style="margin: 5px 0 0 0; font-size: 14px;">Descubra a incrível jornada do ar desde o nariz até os pulmões</p>
+      </div></a> <a href="https://open.spotify.com/episode/43dcT4h15XvktQtMfOi1qQ" target="_blank" class="podcast-link" rel="noopener noreferrer"> <span>🎧</span>
+      <div><strong>Episódio 2: Oxigênio em Energia</strong>
+       <p style="margin: 5px 0 0 0; font-size: 14px;">Como o oxigênio se transforma em energia nas células</p>
+      </div></a> <a href="https://open.spotify.com/episode/7oNKev9NQQCxf3GFABQwxE" target="_blank" class="podcast-link" rel="noopener noreferrer"> <span>🎧</span>
+      <div><strong>Episódio 3: Respira Comigo</strong>
+       <p style="margin: 5px 0 0 0; font-size: 14px;">Técnicas práticas de respiração para relaxar</p>
+      </div></a>
+    </div>
+   </section><!-- EQUIPE -->
+   <section id="equipe" class="section">
+    <h2>Nossa Equipe</h2>
+    <p>Conheça os membros que desenvolveram este projeto:</p>
+    <div class="team-grid">
+     <div class="team-member">
+      <h3>👩‍🎓 Cássia de Jesus Reis</h3>
+      <p>RA: 782120826</p>
+     </div>
+     <div class="team-member">
+      <h3>👩‍🎓 Clarisse Araújo Dantas</h3>
+      <p>RA: 12825157678</p>
+     </div>
+     <div class="team-member">
+      <h3>👩‍🎓 Clinthia Roberta Paulina Silva</h3>
+      <p>RA: 512010106</p>
+     </div>
+     <div class="team-member">
+      <h3>👨‍🎓 Douglas Raphael Cardoso de Oliveira</h3>
+      <p>RA: 821133725</p>
+     </div>
+     <div class="team-member">
+      <h3>👩‍🎓 Lucia Esther Pereira Martins Maciel</h3>
+      <p>RA: 325131354</p>
+     </div>
+     <div class="team-member">
+      <h3>👨‍🎓 Marcos Paulo Dias Costa Filho</h3>
+      <p>RA: 1282118302</p>
+     </div>
+     <div class="team-member">
+      <h3>👩‍🎓 Milena dos Santos Alves</h3>
+      <p>RA: 782214268</p>
+     </div>
+     <div class="team-member">
+      <h3>👨‍🎓 Rodrigo Pereira Guirra da Silva</h3>
+      <p>RA: 782120683</p>
+     </div>
+     <div class="team-member">
+      <h3>👩‍🎓 Stephani Mazar</h3>
+      <p>RA: 125111352749</p>
+     </div>
+    </div>
+    <div class="info-box" style="margin-top: 30px;">
+     <h3>Sobre o Projeto</h3>
+     <p>Este projeto educacional interativo sobre o Sistema Respiratório foi desenvolvido para a disciplina de Biossistemas do Corpo Humano. O objetivo    facilitar o aprendizado através de recursos visuais e interativos.</p>
+    </div>
+   </section><!-- REFERÊNCIAS -->
+   <section id="referencias" class="section">
+    <h2>📚 Referências Bibliográficas</h2>
+    <p>Este projeto foi desenvolvido com base nas seguintes fontes científicas e acadêmicas:</p>
+    <div class="card">
+     <h3>🌐 Fontes Consultadas</h3>
+     <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 15px;">
+      <ul style="line-height: 2.5; font-size: 1.05rem; list-style: none; padding-left: 0;">
+       <li style="margin-bottom: 20px;"><strong>📖 TODAMATÉRIA.</strong> <em>Sistema respiratório.</em> Disponível em: <a href="https://www.todamateria.com.br/sistema-respiratorio/" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://www.todamateria.com.br/sistema-respiratorio/ </a></li>
+       <li style="margin-bottom: 20px;"><strong>💚 MINHA VIDA.</strong> <em>Sistema respiratório.</em> Disponível em: <a href="https://www.minhavida.com.br/saude/temas/sistema-respiratorio" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://www.minhavida.com.br/saude/temas/sistema-respiratorio </a></li>
+       <li style="margin-bottom: 20px;"><strong>🔬 SCIELO.</strong> <em>Biblioteca eletrônica científica online.</em> Disponível em: <a href="https://www.scielo.br/" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://www.scielo.br/ </a></li>
+       <li style="margin-bottom: 20px;"><strong>🎓 UNIVERSIDADE FEDERAL DO ESPÍRITO SANTO.</strong> <em>Repositório Institucional – Biossistemas do Corpo Humano.</em> Disponível em: <a href="https://repositorio.ufes.br/handle/10/12744" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://repositorio.ufes.br/handle/10/12744 </a></li>
+       <li style="margin-bottom: 20px;"><strong>🩺 MSD MANUALS.</strong> <em>Distúrbios pulmonares e das vias respiratórias.</em> Disponível em: <a href="https://www.msdmanuals.com/pt/casa/dist%C3%BArbiospulmonares-e-das-vias-respirat" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://www.msdmanuals.com/pt/casa/distúrbiospulmonares-e-das-vias-respirat </a></li>
+       <li style="margin-bottom: 20px;"><strong>🏥 STANFORD CHILDREN'S HEALTH.</strong> <em>Anatomy of the respiratory system.</em> Disponível em: <a href="https://www.stanfordchildrens.org/en/topic/default?id=anatomy-of-the-respiratory-system-85-P01300" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; border-bottom: 2px solid #667eea;"> https://www.stanfordchildrens.org/en/topic/default?id=anatomy-of-the-respiratory-system-85-P01300 </a></li>
+      </ul>
+     </div>
+    </div>
+   </section>
+  </div>
+  <footer>
+   <p>Projeto Educacional</p>
+  </footer>
+  <script>
+        // Informações dos órgãos
+        const organInfo = {
+            'nariz': {
+                name: '👃 Nariz',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Estrutura:</strong> Formado por ossos (ossos nasais) e cartilagens que formam as narinas e cavidade nasal.</p>
+                        <p><strong>• Revestimento:</strong> Mucosa nasal com células ciliadas e glândulas produtoras de muco.</p>
+                        <p><strong>• Pelos nasais:</strong> Atuam como primeira barreira física contra partículas grandes.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Filtração:</strong> Os pelos nasais e o muco capturam poeira, pólen, bactérias e outras partículas do ar, impedindo que cheguem aos pulmões.</p>
+                        <p><strong>2. Aquecimento:</strong> Os vasos sanguíneos na mucosa nasal aquecem o ar frio até próximo da temperatura corporal (37°C).</p>
+                        <p><strong>3. Umidificação:</strong> O muco adiciona umidade ao ar seco, protegendo os pulmões de ressecamento.</p>
+                        <p><strong>4. Olfato:</strong> Receptores olfativos detectam odores e enviam sinais ao cérebro.</p>
+                        <p><strong>5. Defesa Imunológica:</strong> Anticorpos no muco neutralizam patógenos antes que causem infecções.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>O nariz processa cerca de 10.000 litros de ar por dia e consegue detectar mais de 1 trilhão de odores diferentes!</p>
+                    </div>
+                `
+            },
+            'faringe': {
+                name: '🔄 Faringe',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Localização:</strong> Tubo muscular de 13 cm que vai da base do crânio até a 6ª vértebra cervical.</p>
+                        <p><strong>• Divisões:</strong> Nasofaringe (superior), orofaringe (média) e laringofaringe (inferior).</p>
+                        <p><strong>• Estrutura:</strong> Paredes musculares revestidas por mucosa, com tecido linfoide (amígdalas).</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Via Comum:</strong> Permite a passagem tanto do ar (da cavidade nasal para a laringe) quanto dos alimentos (da boca para o esôfago).</p>
+                        <p><strong>2. Coordenação:</strong> Coordena os movimentos da respiração e deglutição para evitar engasgos.</p>
+                        <p><strong>3. Defesa Imunológica:</strong> As amígdalas (tonsilas) capturam e destroem microrganismos que entram pela boca ou nariz.</p>
+                        <p><strong>4. Equalização de Pressão:</strong> A tuba auditiva se conecta à nasofaringe, equilibrando pressão do ouvido médio.</p>
+                        <p><strong>5. Ressonância Vocal:</strong> Amplifica e modifica os sons produzidos na laringe.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>A faringe participa da deglutição através de um reflexo complexo que envolve mais de 26 músculos diferentes!</p>
+                    </div>
+                `
+            },
+            'laringe': {
+                name: '🎤 Laringe',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Localização:</strong> Situada entre a faringe e a traqueia, na altura das vértebras C4-C6.</p>
+                        <p><strong>• Estrutura:</strong> Formada por 9 cartilagens (tireoide, cricoide, epiglote e outras).</p>
+                        <p><strong>• Cordas Vocais:</strong> Duas pregas de mucosa que vibram para produzir sons.</p>
+                        <p><strong>• Epiglote:</strong> Cartilagem em forma de folha que protege a entrada da laringe.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Fonação (Voz):</strong> As cordas vocais vibram quando o ar passa, produzindo sons que são modificados pela boca e língua para formar palavras.</p>
+                        <p><strong>2. Proteção das Vias Aéreas:</strong> Durante a deglutição, a epiglote fecha a entrada da laringe, impedindo que alimentos ou líquidos entrem na traqueia.</p>
+                        <p><strong>3. Respiração:</strong> Mantém a via aérea aberta durante a respiração normal.</p>
+                        <p><strong>4. Reflexo da Tosse:</strong> Fecha-se rapidamente e depois abre com força, expelindo ar em alta velocidade para limpar as vias aéreas.</p>
+                        <p><strong>5. Controle do Fluxo de Ar:</strong> Regula a quantidade de ar que passa para a traqueia.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>As cordas vocais masculinas vibram cerca de 120 vezes por segundo, enquanto as femininas vibram 220 vezes por segundo, por isso a voz feminina é mais aguda!</p>
+                    </div>
+                `
+            },
+            'traqueia': {
+                name: '🔵 Traqueia',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Dimensões:</strong> Tubo de 10-12 cm de comprimento e 2-2,5 cm de diâmetro.</p>
+                        <p><strong>• Anéis Cartilaginosos:</strong> 15-20 anéis em forma de "C" que mantêm a via aérea sempre aberta.</p>
+                        <p><strong>• Revestimento:</strong> Epitélio pseudoestratificado ciliado com células caliciformes produtoras de muco.</p>
+                        <p><strong>• Músculos:</strong> Parede posterior com músculo liso (traqueal) que fecha o "C" das cartilagens.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Condução do Ar:</strong> Transporta o ar inspirado da laringe até os brônquios e vice-versa durante a expiração.</p>
+                        <p><strong>2. Limpeza Mucociliar:</strong> Os cílios movem o muco (com partículas capturadas) para cima em direção à faringe, onde é deglutido ou expelido pela tosse.</p>
+                        <p><strong>3. Aquecimento Contínuo:</strong> Continua o processo de aquecimento do ar iniciado no nariz.</p>
+                        <p><strong>4. Umidificação:</strong> As glândulas mucosas adicionam umidade ao ar.</p>
+                        <p><strong>5. Proteção Estrutural:</strong> Os anéis cartilaginosos impedem o colapso da traqueia durante mudanças de pressão.</p>
+                        <p><strong>6. Defesa:</strong> O muco contém enzimas e anticorpos que neutralizam patógenos.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>Os cílios da traqueia batem cerca de 1.000 vezes por minuto, movendo o muco a uma velocidade de 1-2 cm por minuto!</p>
+                    </div>
+                `
+            },
+            'bronquios': {
+                name: '🌳 Brônquios',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Brônquio Direito:</strong> Mais curto (2,5 cm), largo e vertical - recebe mais corpos estranhos.</p>
+                        <p><strong>• Brônquio Esquerdo:</strong> Mais longo (5 cm), estreito e oblíquo.</p>
+                        <p><strong>• Ramificações:</strong> Dividem-se em brônquios lobares → segmentares → bronquíolos → bronquíolos terminais → bronquíolos respiratórios → alvéolos.</p>
+                        <p><strong>• Estrutura:</strong> Cartilagem, músculo liso, tecido conjuntivo e epitélio ciliado.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Distribuição do Ar:</strong> Dividem e distribuem o ar inspirado para todas as regiões dos pulmões através de 23 gerações de ramificações.</p>
+                        <p><strong>2. Controle do Fluxo Aéreo:</strong> O músculo liso nas paredes bronquiais se contrai (broncoconstrição) ou relaxa (broncodilatação) para regular o fluxo de ar.</p>
+                        <p><strong>3. Limpeza Contínua:</strong> Cílios e muco continuam o processo de limpeza, capturando partículas que passaram pelas vias superiores.</p>
+                        <p><strong>4. Aquecimento e Umidificação Final:</strong> Completam o condicionamento do ar antes de chegar aos alvéolos.</p>
+                        <p><strong>5. Defesa Imunológica:</strong> Contêm macrófagos e células do sistema imune que combatem infecções.</p>
+                        <p><strong>6. Resposta a Irritantes:</strong> Receptores sensoriais detectam substâncias nocivas e ativam reflexos de tosse e broncoconstrição.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>Se todas as ramificações dos brônquios e bronquíolos fossem esticadas, formariam um tubo de mais de 2.400 km de comprimento!</p>
+                    </div>
+                `
+            },
+            'pulmao-esquerdo': {
+                name: '🫁 Pulmão Esquerdo',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Lobos:</strong> Dividido em 2 lobos (superior e inferior) pela fissura oblíqua.</p>
+                        <p><strong>• Tamanho:</strong> Menor que o direito (10% menor em volume) para acomodar o coração.</p>
+                        <p><strong>• Peso:</strong> Aproximadamente 600 gramas.</p>
+                        <p><strong>• Alvéolos:</strong> Contém cerca de 280-300 milhões de alvéolos.</p>
+                        <p><strong>• Pleura:</strong> Envolto por duas membranas (pleura visceral e parietal) com líquido pleural entre elas.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Hematose (Troca Gasosa):</strong> Nos alvéolos, o oxigênio (O₂) do ar difunde-se para o sangue, enquanto o dióxido de carbono (CO₂) sai do sangue para o ar.</p>
+                        <p><strong>2. Oxigenação do Sangue:</strong> Fornece oxigênio para todas as células do corpo através da corrente sanguínea.</p>
+                        <p><strong>3. Eliminação de CO₂:</strong> Remove o dióxido de carbono, produto residual do metabolismo celular.</p>
+                        <p><strong>4. Regulação do pH Sanguíneo:</strong> Controla os níveis de CO₂ no sangue, ajudando a manter o equilíbrio ácido-base do corpo.</p>
+                        <p><strong>5. Filtração Sanguínea:</strong> Captura pequenos coágulos e bolhas de ar antes que cheguem ao cérebro e outros órgãos.</p>
+                        <p><strong>6. Reservatório de Sangue:</strong> Pode armazenar até 500ml de sangue quando necessário.</p>
+                        <p><strong>7. Produção de Surfactante:</strong> Células alveolares tipo II produzem surfactante que impede o colapso dos alvéolos.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>Apesar de ser menor, o pulmão esquerdo é igualmente eficiente na troca gasosa devido à sua rica rede de capilares sanguíneos!</p>
+                    </div>
+                `
+            },
+            'pulmao-direito': {
+                name: '🫁 Pulmão Direito',
+                description: `
+                    <div style="line-height: 1.8;">
+                        <h4 style="color: #667eea; margin-top: 0;">📋 Características Anatômicas:</h4>
+                        <p><strong>• Lobos:</strong> Dividido em 3 lobos (superior, médio e inferior) por duas fissuras.</p>
+                        <p><strong>• Tamanho:</strong> Maior que o esquerdo (cerca de 10% maior em volume).</p>
+                        <p><strong>• Peso:</strong> Aproximadamente 700 gramas.</p>
+                        <p><strong>• Alvéolos:</strong> Contém cerca de 320-340 milhões de alvéolos.</p>
+                        <p><strong>• Capacidade:</strong> Volume total de aproximadamente 3 litros.</p>
+                        <p><strong>• Pleura:</strong> Também envolto por membranas pleurais que facilitam o movimento durante a respiração.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">⚙️ Funções Principais:</h4>
+                        <p><strong>1. Hematose (Troca Gasosa):</strong> Principal local de troca de gases - O₂ entra no sangue e CO₂ é eliminado através de difusão passiva nos alvéolos.</p>
+                        <p><strong>2. Oxigenação Sistêmica:</strong> Junto com o pulmão esquerdo, oxigena todo o sangue que retorna ao coração do corpo.</p>
+                        <p><strong>3. Eliminação de Resíduos Gasosos:</strong> Remove CO₂ e outros gases residuais do metabolismo.</p>
+                        <p><strong>4. Regulação do Equilíbrio Ácido-Base:</strong> Controla rapidamente o pH sanguíneo alterando a frequência respiratória.</p>
+                        <p><strong>5. Metabolismo de Substâncias:</strong> Converte angiotensina I em angiotensina II (regulação da pressão arterial).</p>
+                        <p><strong>6. Defesa Pulmonar:</strong> Macrófagos alveolares fagocitam bactérias, vírus e partículas inaladas.</p>
+                        <p><strong>7. Termorregulação:</strong> Ajuda a regular a temperatura corporal através da perda de calor na respiração.</p>
+                        
+                        <h4 style="color: #667eea; margin-top: 20px;">💡 Curiosidade:</h4>
+                        <p>O pulmão direito processa um pouco mais de sangue que o esquerdo e, juntos, os pulmões filtram 100% do sangue do corpo a cada minuto!</p>
+                    </div>
+                `
+            },
+            'diafragma': {
+                name: 'Diafragma',
+                description: 'O diafragma é o principal músculo da respiração. Quando se contrai, ele desce, aumentando o volume da caixa tor  cica e permitindo a entrada de ar (inspiração). Quando relaxa, sobe, expulsando o ar (expiração).'
+            }
+        };
+
+        // Navegação entre seções
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active de todos os links e seções
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                // Adiciona active ao link clicado
+                this.classList.add('active');
+                
+                // Mostra a seção correspondente
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Scroll para o topo
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Interatividade do diagrama
+        document.querySelectorAll('.clickable-part').forEach(part => {
+            part.addEventListener('click', function() {
+                const organ = this.getAttribute('data-organ');
+                const info = organInfo[organ];
+                
+                if (info) {
+                    const detailPanel = document.getElementById('organ-details');
+                    document.getElementById('organ-name').innerHTML = info.name;
+                    document.getElementById('organ-description').innerHTML = info.description;
+                    detailPanel.classList.add('show');
+                    
+                    // Scroll suave até o painel de detalhes
+                    detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        });
+
+        // Element SDK Configuration
+        const defaultConfig = {
+            main_title: 'Sistema Respiratório',
+            subtitle: 'Aprenda sobre a anatomia e fisiologia do sistema respiratório humano'
+        };
+
+        async function onConfigChange(config) {
+            const mainTitleEl = document.getElementById('mainTitle');
+            const subtitleEl = document.getElementById('subtitle');
+
+            if (mainTitleEl) {
+                mainTitleEl.textContent = config.main_title || defaultConfig.main_title;
+            }
+            if (subtitleEl) {
+                subtitleEl.textContent = config.subtitle || defaultConfig.subtitle;
+            }
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ['main_title', config.main_title || defaultConfig.main_title],
+                ['subtitle', config.subtitle || defaultConfig.subtitle]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+
+        // Quiz Modes
+        let currentQuizMode = null; // 'perguntas' ou 'identificar'
+
+        // Event listeners para seleção de modo
+        document.getElementById('modePerguntas').addEventListener('click', function() {
+            currentQuizMode = 'perguntas';
+            startQuiz();
+        });
+
+        document.getElementById('modeIdentificar').addEventListener('click', function() {
+            currentQuizMode = 'identificar';
+            startQuiz();
+        });
+
+        // Adicionar efeito hover aos cards de modo
+        const modeCards = [document.getElementById('modePerguntas'), document.getElementById('modeIdentificar')];
+        modeCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.03)';
+                this.style.boxShadow = '0 15px 40px rgba(0,0,0,0.25)';
+                this.style.borderColor = this.id === 'modePerguntas' ? '#667eea' : '#28a745';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+                this.style.borderColor = 'transparent';
+            });
+        });
+
+        // Quiz de Identificação - Estruturas para identificar
+        const identifyQuestions = [
+            { organ: 'nariz', name: 'Nariz', hint: 'A porta de entrada do ar, responsável por filtrar e aquecer' },
+            { organ: 'faringe', name: 'Faringe', hint: 'Passagem comum para ar e alimentos' },
+            { organ: 'laringe', name: 'Laringe', hint: 'Contém as cordas vocais' },
+            { organ: 'traqueia', name: 'Traqueia', hint: 'Tubo com anéis cartilaginosos que conduz o ar' },
+            { organ: 'bronquios', name: 'Brônquios', hint: 'Ramificações que distribuem o ar aos pulmões' },
+            { organ: 'pulmao-esquerdo', name: 'Pulmão Esquerdo', hint: 'Possui 2 lobos e é menor que o direito' },
+            { organ: 'pulmao-direito', name: 'Pulmão Direito', hint: 'Possui 3 lobos e é o maior' },
+            { organ: 'diafragma', name: 'Diafragma', hint: 'Principal músculo da respiração' }
+        ];
+
+        // Quiz Functionality - Layout de uma pergunta por vez
+        const quizQuestions = [
+            {
+                question: "Quantas respirações uma pessoa faz em média por dia?",
+                options: ["5.000", "10.000", "20.000", "30.000"],
+                correct: 2,
+                explanation: "Uma pessoa respira em média 20.000 vezes por dia! Isso ocorre de forma automática, controlada pelo centro respiratório no cérebro."
+            },
+            {
+                question: "Qual é a área aproximada da superfície dos alvéolos pulmonares?",
+                options: ["10m²", "30m²", "70m²", "100m²"],
+                correct: 2,
+                explanation: "Se fosse possível esticar toda a superfície dos alvéolos, ela cobriria aproximadamente 70m² - o tamanho de meia quadra de tênis!"
+            },
+            {
+                question: "Qual é o principal músculo da respiração?",
+                options: ["Intercostais", "Diafragma", "Peitoral", "Abdominal"],
+                correct: 1,
+                explanation: "O diafragma é o principal músculo da respiração. Quando se contrai, desce e aumenta o volume da caixa torácica, permitindo a entrada de ar."
+            },
+            {
+                question: "Quantos lobos possui o pulmão direito?",
+                options: ["1 lobo", "2 lobos", "3 lobos", "4 lobos"],
+                correct: 2,
+                explanation: "O pulmão direito possui 3 lobos, enquanto o pulmão esquerdo possui apenas 2 lobos para dar espaço ao coração."
+            },
+            {
+                question: "Qual estrutura impede que alimentos entrem na laringe durante a deglutição?",
+                options: ["Epiglote", "Faringe", "Traqueia", "Esôfago"],
+                correct: 0,
+                explanation: "A epiglote é uma estrutura cartilaginosa que fecha a laringe durante a deglutição, impedindo que alimentos entrem nas vias respiratórias."
+            },
+            {
+                question: "Qual é o volume de ar em uma respiração normal?",
+                options: ["100ml", "500ml", "1.000ml", "2.000ml"],
+                correct: 1,
+                explanation: "O volume corrente (volume de ar inspirado e expirado em uma respiração normal) é de aproximadamente 500ml."
+            },
+            {
+                question: "Onde ocorre a troca gasosa (hematose) nos pulmões?",
+                options: ["Brônquios", "Traqueia", "Alvéolos", "Bronquíolos"],
+                correct: 2,
+                explanation: "A hematose ocorre nos alvéolos pulmonares, onde o oxigênio passa para o sangue e o gás carbônico é eliminado."
+            },
+            {
+                question: "Qual é a principal causa da DPOC (Doença Pulmonar Obstrutiva Crônica)?",
+                options: ["Sedentarismo", "Tabagismo", "Má alimentação", "Estresse"],
+                correct: 1,
+                explanation: "O tabagismo é responsável por 85-90% dos casos de DPOC. É uma doença progressiva e irreversível que bloqueia o fluxo de ar."
+            },
+            {
+                question: "Quantos alvéolos existem aproximadamente nos pulmões?",
+                options: ["100 milhões", "300 milhões", "600 milhões", "1 bilhão"],
+                correct: 2,
+                explanation: "Os pulmões contêm aproximadamente 600 milhões de alvéolos, proporcionando uma enorme superfície para a troca gasosa."
+            },
+            {
+                question: "Qual sistema trabalha diretamente com o respiratório na hematose?",
+                options: ["Sistema Digestório", "Sistema Cardiovascular", "Sistema Nervoso", "Sistema Muscular"],
+                correct: 1,
+                explanation: "O sistema cardiovascular trabalha diretamente com o respiratório: o coração bombeia sangue desoxigenado para os pulmões, onde ocorre a hematose, e depois distribui o sangue oxigenado para o corpo."
+            }
+        ];
+
+        let currentScore = 0;
+        let currentQuestionIndex = 0;
+        let hasAnswered = false;
+        let shuffledIdentifyQuestions = [];
+
+        function startQuiz() {
+            // Esconder seletor de modo e mostrar quiz
+            document.getElementById('quizModeSelector').style.display = 'none';
+            document.getElementById('quizScoreBox').style.display = 'block';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            currentScore = 0;
+            currentQuestionIndex = 0;
+            hasAnswered = false;
+            
+            if (currentQuizMode === 'identificar') {
+                // Embaralhar perguntas de identificação
+                shuffledIdentifyQuestions = [...identifyQuestions].sort(() => Math.random() - 0.5);
+                updateScore();
+                document.getElementById('total').textContent = shuffledIdentifyQuestions.length;
+                renderIdentifyQuestion();
+            } else {
+                updateScore();
+                document.getElementById('total').textContent = quizQuestions.length;
+                renderCurrentQuestion();
+            }
+            
+            document.getElementById('quizResult').style.display = 'none';
+        }
+
+        function initQuiz() {
+            currentQuizMode = null;
+            document.getElementById('quizModeSelector').style.display = 'block';
+            document.getElementById('quizScoreBox').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'none';
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = currentScore;
+            document.getElementById('total').textContent = quizQuestions.length;
+        }
+
+        function renderCurrentQuestion() {
+            const container = document.getElementById('quizContainer');
+            const question = quizQuestions[currentQuestionIndex];
+            
+            container.innerHTML = `
+                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 30px; text-align: center; box-shadow: 0 5px 15px rgba(102,126,234,0.3);">
+                        <h3 style="margin: 0; font-size: 1.8rem; font-weight: 700;">📝 Questão ${currentQuestionIndex + 1} de ${quizQuestions.length}</h3>
+                    </div>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 35px; color: #333; line-height: 1.5; text-align: center; font-weight: 600;">${question.question}</h3>
+                    <div class="quiz-options" id="currentOptions" style="display: grid; gap: 18px;">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="quiz-option" data-option="${optIndex}" style="background: white; border: 3px solid #e0e0e0; padding: 20px 25px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-size: 1.1rem; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                <span style="display: inline-block; width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; text-align: center; line-height: 35px; margin-right: 15px; font-weight: bold;">${String.fromCharCode(65 + optIndex)}</span>
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="quiz-feedback" id="currentFeedback"></div>
+                    <div id="navigationButtons" style="margin-top: 35px; text-align: center; display: none;">
+                        <button id="nextButton" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 18px 45px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,126,234,0.4); transition: all 0.3s ease;">
+                            ${currentQuestionIndex < quizQuestions.length - 1 ? 'Próxima Questão ➡️' : 'Ver Resultado 🎉'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Adicionar event listeners às opções
+            const optionsDiv = container.querySelector('#currentOptions');
+            optionsDiv.querySelectorAll('.quiz-option').forEach(optionEl => {
+                optionEl.addEventListener('click', () => handleAnswer(parseInt(optionEl.dataset.option), optionsDiv));
+                
+                // Efeito hover
+                optionEl.addEventListener('mouseenter', function() {
+                    if (!hasAnswered) {
+                        this.style.transform = 'translateX(8px)';
+                        this.style.borderColor = '#667eea';
+                        this.style.boxShadow = '0 5px 20px rgba(102,126,234,0.25)';
+                    }
+                });
+                
+                optionEl.addEventListener('mouseleave', function() {
+                    if (!hasAnswered && !this.classList.contains('selected') && !this.classList.contains('correct') && !this.classList.contains('incorrect')) {
+                        this.style.transform = 'translateX(0)';
+                        this.style.borderColor = '#e0e0e0';
+                        this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                    }
+                });
+            });
+
+            hasAnswered = false;
+        }
+
+        function handleAnswer(selectedOption, optionsDiv) {
+            if (hasAnswered) {
+                return;
+            }
+
+            hasAnswered = true;
+            const question = quizQuestions[currentQuestionIndex];
+            const isCorrect = selectedOption === question.correct;
+
+            if (isCorrect) {
+                currentScore++;
+                updateScore();
+            }
+
+            // Marcar opções
+            optionsDiv.querySelectorAll('.quiz-option').forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                if (idx === question.correct) {
+                    opt.classList.add('correct');
+                } else if (idx === selectedOption && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Mostrar feedback
+            const feedbackDiv = document.getElementById('currentFeedback');
+            feedbackDiv.className = `quiz-feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackDiv.innerHTML = `
+                <strong>${isCorrect ? '✅ Correto!' : '❌ Incorreto!'}</strong><br>
+                ${question.explanation}
+            `;
+
+            // Mostrar botão de navegação
+            const navButtons = document.getElementById('navigationButtons');
+            navButtons.style.display = 'block';
+
+            // Adicionar event listener ao botão
+            const nextButton = document.getElementById('nextButton');
+            nextButton.addEventListener('click', () => {
+                if (currentQuestionIndex < quizQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    renderCurrentQuestion();
+                } else {
+                    showResults();
+                }
+            });
+
+            // Adicionar efeito hover ao botão
+            nextButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 20px rgba(102,126,234,0.4)';
+            });
+
+            nextButton.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 15px rgba(102,126,234,0.3)';
+            });
+        }
+
+        function renderIdentifyQuestion() {
+            const container = document.getElementById('quizContainer');
+            const question = shuffledIdentifyQuestions[currentQuestionIndex];
+            
+            container.innerHTML = `
+                <div class="quiz-question">
+                    <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                        <h3 style="margin: 0; font-size: 1.5rem;">Questão ${currentQuestionIndex + 1} de ${shuffledIdentifyQuestions.length}</h3>
+                    </div>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px; text-align: center;">Clique na estrutura: <span style="color: #28a745;">${question.name}</span></h3>
+                    <div class="info-box" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 2px solid #28a745; margin-bottom: 30px;">
+                        <p style="margin: 0; font-size: 1.1rem; text-align: center;"><strong>💡 Dica:</strong> ${question.hint}</p>
+                    </div>
+                    <div class="diagram" style="position: relative;">
+                        <svg class="respiratory-svg identify-svg" viewBox="0 0 400 650" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Definições de gradientes e sombras -->
+                            <defs>
+                                <linearGradient id="noseGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFD5E5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#FFB6C1;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="pharynxGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFB89D;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#FFA07A;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="larynxGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FF8674;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#FF6347;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="tracheaGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#A8D8F0;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#87CEEB;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="bronchiGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#6BA3D4;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#4682B4;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="lungGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#B8EDE0;stop-opacity:0.9" />
+                                    <stop offset="50%" style="stop-color:#98D8C8;stop-opacity:0.85" />
+                                    <stop offset="100%" style="stop-color:#78C4B4;stop-opacity:0.8" />
+                                </linearGradient>
+                                <linearGradient id="diaphragmGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFF0DB;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#FFE4B5;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="shadow2">
+                                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                                </filter>
+                            </defs>
+
+                            <!-- Pulmão Esquerdo -->
+                            <g class="clickable-part-quiz" data-organ="pulmao-esquerdo" filter="url(#shadow2)">
+                                <path d="M 150 290 Q 80 320 80 390 Q 80 480 120 520 Q 140 540 150 540 Q 160 540 170 530 Q 200 500 200 390 Q 200 320 150 290" 
+                                      fill="url(#lungGradient2)" stroke="#2D8B74" stroke-width="3" opacity="0.95"/>
+                                <path d="M 150 330 Q 120 340 110 380" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <path d="M 150 370 Q 130 380 120 420" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <circle cx="130" cy="360" r="3" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="145" cy="380" r="2.5" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="125" cy="400" r="2.5" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="160" cy="410" r="3" fill="#4682B4" opacity="0.3"/>
+                            </g>
+
+                            <!-- Pulmão Direito -->
+                            <g class="clickable-part-quiz" data-organ="pulmao-direito" filter="url(#shadow2)">
+                                <path d="M 250 290 Q 320 320 320 390 Q 320 480 280 520 Q 260 540 250 540 Q 240 540 230 530 Q 200 500 200 390 Q 200 320 250 290" 
+                                      fill="url(#lungGradient2)" stroke="#2D8B74" stroke-width="3" opacity="0.95"/>
+                                <path d="M 250 330 Q 280 340 290 380" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <path d="M 250 360 Q 270 370 280 410" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <path d="M 250 390 Q 265 400 275 440" stroke="#2D8B74" stroke-width="1.5" fill="none" opacity="0.4"/>
+                                <circle cx="270" cy="360" r="3" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="255" cy="380" r="2.5" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="275" cy="400" r="2.5" fill="#4682B4" opacity="0.3"/>
+                                <circle cx="240" cy="410" r="3" fill="#4682B4" opacity="0.3"/>
+                            </g>
+
+                            <!-- Nariz -->
+                            <g class="clickable-part-quiz" data-organ="nariz" filter="url(#shadow2)">
+                                <ellipse cx="200" cy="50" rx="35" ry="25" fill="url(#noseGradient2)" stroke="#FF1493" stroke-width="2.5"/>
+                                <ellipse cx="188" cy="50" rx="8" ry="12" fill="#FF69B4" opacity="0.6"/>
+                                <ellipse cx="212" cy="50" rx="8" ry="12" fill="#FF69B4" opacity="0.6"/>
+                                <path d="M 185 58 Q 200 65 215 58" stroke="#C71585" stroke-width="2" fill="none"/>
+                            </g>
+
+                            <!-- Faringe -->
+                            <g class="clickable-part-quiz" data-organ="faringe" filter="url(#shadow2)">
+                                <path d="M 185 75 L 185 115 Q 185 125 195 125 L 205 125 Q 215 125 215 115 L 215 75 Q 215 75 200 75 Q 185 75 185 75" 
+                                      fill="url(#pharynxGradient2)" stroke="#E85D3A" stroke-width="2.5"/>
+                                <line x1="188" y1="85" x2="212" y2="85" stroke="#E85D3A" stroke-width="1" opacity="0.5"/>
+                                <line x1="188" y1="95" x2="212" y2="95" stroke="#E85D3A" stroke-width="1" opacity="0.5"/>
+                                <line x1="188" y1="105" x2="212" y2="105" stroke="#E85D3A" stroke-width="1" opacity="0.5"/>
+                            </g>
+
+                            <!-- Laringe -->
+                            <g class="clickable-part-quiz" data-organ="laringe" filter="url(#shadow2)">
+                                <path d="M 175 130 Q 175 145 185 150 L 215 150 Q 225 145 225 130 Q 225 125 212 122 L 188 122 Q 175 125 175 130" 
+                                      fill="url(#larynxGradient2)" stroke="#D43F1A" stroke-width="2.5"/>
+                                <ellipse cx="200" cy="136" rx="15" ry="8" fill="#FF4500" opacity="0.4"/>
+                                <path d="M 190 136 Q 200 140 210 136" stroke="#8B0000" stroke-width="1.5" fill="none"/>
+                            </g>
+
+                            <!-- Traqueia -->
+                            <g class="clickable-part-quiz" data-organ="traqueia" filter="url(#shadow2)">
+                                <rect x="187" y="155" width="26" height="95" fill="url(#tracheaGradient2)" stroke="#4682B4" stroke-width="2.5" rx="3"/>
+                                <path d="M 190 165 Q 200 168 210 165" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 178 Q 200 181 210 178" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 191 Q 200 194 210 191" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 204 Q 200 207 210 204" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 217 Q 200 220 210 217" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 230 Q 200 233 210 230" stroke="#4682B4" stroke-width="2" fill="none"/>
+                                <path d="M 190 243 Q 200 246 210 243" stroke="#4682B4" stroke-width="2" fill="none"/>
+                            </g>
+
+                            <!-- Brônquios -->
+                            <g class="clickable-part-quiz" data-organ="bronquios" filter="url(#shadow2)">
+                                <path d="M 200 250 Q 180 265 150 290" stroke="url(#bronchiGradient2)" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <path d="M 200 250 Q 185 262 160 280" stroke="#6BA3D4" stroke-width="2" fill="none" opacity="0.6"/>
+                                <path d="M 200 250 Q 220 265 250 290" stroke="url(#bronchiGradient2)" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <path d="M 200 250 Q 215 262 240 280" stroke="#6BA3D4" stroke-width="2" fill="none" opacity="0.6"/>
+                                <path d="M 170 275 Q 160 280 150 285" stroke="#4682B4" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7"/>
+                                <path d="M 230 275 Q 240 280 250 285" stroke="#4682B4" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7"/>
+                            </g>
+
+                            <!-- Diafragma -->
+                            <g class="clickable-part-quiz" data-organ="diafragma" filter="url(#shadow2)">
+                                <path d="M 75 545 Q 120 570 200 575 Q 280 570 325 545" 
+                                      fill="url(#diaphragmGradient2)" stroke="#D4A574" stroke-width="3"/>
+                                <path d="M 90 550 Q 130 568 200 572 Q 270 568 310 550" 
+                                      stroke="#D4A574" stroke-width="1.5" fill="none" opacity="0.5"/>
+                                <line x1="120" y1="555" x2="125" y2="565" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                                <line x1="150" y1="563" x2="155" y2="570" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                                <line x1="180" y1="567" x2="185" y2="573" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                                <line x1="210" y1="567" x2="215" y2="573" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                                <line x1="240" y1="563" x2="245" y2="570" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                                <line x1="270" y1="555" x2="275" y2="565" stroke="#D4A574" stroke-width="1.5" opacity="0.4"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="quiz-feedback" id="currentFeedback"></div>
+                    <div id="navigationButtons" style="margin-top: 30px; text-align: center; display: none;">
+                        <button id="nextButton" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border: none; padding: 15px 40px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(40,167,69,0.3); transition: all 0.3s ease;">
+                            ${currentQuestionIndex < shuffledIdentifyQuestions.length - 1 ? 'Próxima Estrutura ➡️' : 'Ver Resultado 🎉'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Adicionar event listeners às partes clicáveis
+            document.querySelectorAll('.clickable-part-quiz').forEach(part => {
+                part.style.cursor = 'pointer';
+                part.addEventListener('click', function() {
+                    handleIdentifyAnswer(this.getAttribute('data-organ'));
+                });
+                
+                // Efeito hover
+                part.addEventListener('mouseenter', function() {
+                    if (!hasAnswered) {
+                        this.style.opacity = '0.7';
+                        this.style.transform = 'scale(1.05)';
+                    }
+                });
+                
+                part.addEventListener('mouseleave', function() {
+                    if (!hasAnswered) {
+                        this.style.opacity = '1';
+                        this.style.transform = 'scale(1)';
+                    }
+                });
+            });
+
+            hasAnswered = false;
+        }
+
+        function handleIdentifyAnswer(selectedOrgan) {
+            if (hasAnswered) {
+                return;
+            }
+
+            hasAnswered = true;
+            const question = shuffledIdentifyQuestions[currentQuestionIndex];
+            const isCorrect = selectedOrgan === question.organ;
+
+            if (isCorrect) {
+                currentScore++;
+                updateScore();
+            }
+
+            // Marcar a estrutura clicada e a correta
+            document.querySelectorAll('.clickable-part-quiz').forEach(part => {
+                const organ = part.getAttribute('data-organ');
+                part.style.cursor = 'default';
+                
+                if (organ === question.organ) {
+                    // Estrutura correta - verde
+                    part.style.filter = 'drop-shadow(0 0 15px #28a745)';
+                    part.style.opacity = '1';
+                } else if (organ === selectedOrgan && !isCorrect) {
+                    // Estrutura errada clicada - vermelho
+                    part.style.filter = 'drop-shadow(0 0 15px #dc3545)';
+                    part.style.opacity = '0.7';
+                } else {
+                    // Outras estruturas - cinza
+                    part.style.opacity = '0.3';
+                }
+            });
+
+            // Mostrar feedback
+            const feedbackDiv = document.getElementById('currentFeedback');
+            feedbackDiv.className = `quiz-feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackDiv.innerHTML = `
+                <strong>${isCorrect ? '✅ Correto!' : '❌ Incorreto!'}</strong><br>
+                ${isCorrect ? 
+                    `Muito bem! Você identificou corretamente o(a) <strong>${question.name}</strong>.` : 
+                    `Não foi dessa vez. A estrutura correta era <strong>${question.name}</strong>, que está destacada em verde.`
+                }
+            `;
+
+            // Mostrar botão de navegação
+            const navButtons = document.getElementById('navigationButtons');
+            navButtons.style.display = 'block';
+
+            const nextButton = document.getElementById('nextButton');
+            nextButton.addEventListener('click', () => {
+                if (currentQuestionIndex < shuffledIdentifyQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    renderIdentifyQuestion();
+                } else {
+                    showResults();
+                }
+            });
+
+            nextButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 20px rgba(40,167,69,0.4)';
+            });
+
+            nextButton.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 15px rgba(40,167,69,0.3)';
+            });
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'block';
+            document.getElementById('finalScore').textContent = currentScore;
+            
+            const totalQuestions = currentQuizMode === 'identificar' ? shuffledIdentifyQuestions.length : quizQuestions.length;
+            document.getElementById('finalTotal').textContent = totalQuestions;
+
+            const percentage = (currentScore / quizQuestions.length) * 100;
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                emoji = '🏆';
+                message = 'Perfeito! Você é um expert no sistema respiratório!';
+            } else if (percentage >= 80) {
+                emoji = '🌟';
+                message = 'Excelente! Você domina bem o conteúdo!';
+            } else if (percentage >= 60) {
+                emoji = '👍';
+                message = 'Muito bom! Continue estudando!';
+            } else if (percentage >= 40) {
+                emoji = '📚';
+                message = 'Bom começo! Revise o conteúdo e tente novamente!';
+            } else {
+                emoji = '💪';
+                message = 'Não desanime! Releia as abas e tente de novo!';
+            }
+
+            document.getElementById('resultMessage').innerHTML = `${emoji} ${message}`;
+
+            // Scroll para o resultado
+            document.getElementById('quizResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Event listeners para botões de reiniciar
+        document.getElementById('restartQuiz').addEventListener('click', initQuiz);
+        document.getElementById('restartQuizBottom').addEventListener('click', () => {
+            initQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Adicionar efeito hover aos botões de reiniciar
+        const restartButtons = [document.getElementById('restartQuiz'), document.getElementById('restartQuizBottom')];
+        restartButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 20px rgba(102,126,234,0.4)';
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 15px rgba(102,126,234,0.3)';
+            });
+        });
+
+        // Inicializar quiz quando a página carregar
+        initQuiz();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a3ce4a975609516',t:'MTc2NDAyOTExNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
